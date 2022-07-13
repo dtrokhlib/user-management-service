@@ -1,8 +1,16 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Get,
+    Param,
+    Post,
+    Put,
+    Req,
+    UseGuards,
+} from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserService } from './user.service';
-import { Request } from 'express';
 import { RequestExt } from 'src/types/request.type';
 
 @Controller('user')
@@ -18,5 +26,18 @@ export class UserController {
     @UseGuards(JwtAuthGuard)
     findAvailableUsers(@Req() request: RequestExt) {
         return this.userService.findAvailableUsers(request.user);
+    }
+
+    @Put('/change-boss')
+    @UseGuards(JwtAuthGuard)
+    changeUserBoss(
+        @Body() { userId, newBossId }: any,
+        @Req() request: RequestExt
+    ) {
+        return this.userService.changeUserBoss(
+            request.user.id,
+            userId,
+            newBossId
+        );
     }
 }

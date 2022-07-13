@@ -1,9 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { isValidObjectId, Model } from 'mongoose';
+import mongoose, { isValidObjectId, Model } from 'mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User, UserDocument, UserRoles } from './user.model';
 import * as bcrypt from 'bcryptjs';
+import { NotFoundError } from 'rxjs';
 
 @Injectable()
 export class UserService {
@@ -22,6 +23,58 @@ export class UserService {
             password: hashedPassword,
         });
         return await createdUser.save();
+    }
+
+    async findByEmail(email: string) {
+        return await this.userModel.findOne({ email }).exec();
+    }
+
+    async findById(id: string) {
+        try {
+            return await this.userModel.findById(id).exec();
+        } catch (err) {
+            throw new HttpException(
+                { message: 'Object ID is not valid' },
+                HttpStatus.BAD_REQUEST
+            );
+        }
+    }
+
+    async findAvailableUsers(user: { id: string; role: string }) {
+        if (user.role === UserRoles.admin) {
+            return await this.userModel
+                .find({}, { email: 1, _id: 1, boss: 1, role: 1 })
+                .exec();
+        }
+
+        return await this.recursiveUserQuery(user);
+    }
+
+    async changeUserBoss(
+        currentBossId: string,
+        userId: string,
+        newBossId: string
+    ) {
+        try {
+            const user = await this.userModel.findOne({
+                boss: new mongoose.Types.ObjectId(currentBossId),
+                _id: new mongoose.Types.ObjectId(userId),
+            });
+            const newBoss = await this.userModel.findById(newBossId);
+
+            user.boss = newBoss._id;
+            await user.save();
+
+            return user;
+        } catch (error) {
+            throw new HttpException(
+                {
+                    message:
+                        'User not found or this user is not your subordinate',
+                },
+                HttpStatus.NOT_FOUND
+            );
+        }
     }
 
     private async validateUser(dto: CreateUserDto) {
@@ -50,31 +103,6 @@ export class UserService {
 
     private isBossRequired(dto: CreateUserDto) {
         return dto.role === UserRoles.user ? true : dto.boss;
-    }
-
-    async findByEmail(email: string) {
-        return await this.userModel.findOne({ email }).exec();
-    }
-
-    async findById(id: string) {
-        try {
-            return await this.userModel.findById(id).exec();
-        } catch (err) {
-            throw new HttpException(
-                { message: 'Object ID is not valid' },
-                HttpStatus.BAD_REQUEST
-            );
-        }
-    }
-
-    async findAvailableUsers(user: { id: string; role: string }) {
-        if (user.role === UserRoles.admin) {
-            return await this.userModel
-                .find({}, { email: 1, _id: 1, boss: 1, role: 1 })
-                .exec();
-        }
-
-        return await this.recursiveUserQuery(user);
     }
 
     private async recursiveUserQuery(user) {
