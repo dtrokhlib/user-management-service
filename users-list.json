@@ -1,0 +1,91 @@
+[
+    {
+        "_id": "62cedb5a74f346de36fdcb8b",
+        "email": "admin@test.com",
+        "role": "admin"
+    },
+    {
+        "_id": "62cedcc1fcd06c11b005361d",
+        "email": "boss1@test.com",
+        "boss": "62cedb5a74f346de36fdcb8b",
+        "role": "user"
+    },
+    {
+        "_id": "62cedcc6fcd06c11b0053621",
+        "email": "boss2@test.com",
+        "boss": "62cedb5a74f346de36fdcb8b",
+        "role": "user"
+    },
+    {
+        "_id": "62cedccbfcd06c11b0053625",
+        "email": "boss3@test.com",
+        "boss": "62cedb5a74f346de36fdcb8b",
+        "role": "user"
+    },
+    {
+        "_id": "62cedd01fcd06c11b0053629",
+        "email": "user1_bos1@test.com",
+        "boss": "62cedcc1fcd06c11b005361d",
+        "role": "user"
+    },
+    {
+        "_id": "62cedd05fcd06c11b005362d",
+        "email": "user2_bos1@test.com",
+        "boss": "62cedcc1fcd06c11b005361d",
+        "role": "user"
+    },
+    {
+        "_id": "62cedd10fcd06c11b0053631",
+        "email": "user1_bos2@test.com",
+        "boss": "62cedcc6fcd06c11b0053621",
+        "role": "user"
+    },
+    {
+        "_id": "62cedd12fcd06c11b0053635",
+        "email": "user2_bos2@test.com",
+        "boss": "62cedcc6fcd06c11b0053621",
+        "role": "user"
+    },
+    {
+        "_id": "62cedd15fcd06c11b0053639",
+        "email": "user3_bos2@test.com",
+        "boss": "62cedcc6fcd06c11b0053621",
+        "role": "user"
+    },
+    {
+        "_id": "62cedd20fcd06c11b005363d",
+        "email": "user1_bos3@test.com",
+        "boss": "62cedccbfcd06c11b0053625",
+        "role": "user"
+    },
+    {
+        "_id": "62cedd5cfcd06c11b0053641",
+        "email": "intern1_user1_bos3@test.com",
+        "boss": "62cedd20fcd06c11b005363d",
+        "role": "user"
+    },
+    {
+        "_id": "62cedd5ffcd06c11b0053645",
+        "email": "intern2_user1_bos3@test.com",
+        "boss": "62cedd20fcd06c11b005363d",
+        "role": "user"
+    },
+    {
+        "_id": "62cedd92fcd06c11b0053649",
+        "email": "candidate1_intern1_user1_bos3@test.com",
+        "boss": "62cedd5cfcd06c11b0053641",
+        "role": "user"
+    },
+    {
+        "_id": "62cee783242f3be6beb7577d",
+        "email": "candidate1_intern2_user1_bos3@test.com",
+        "boss": "62cedd5ffcd06c11b0053645",
+        "role": "user"
+    },
+    {
+        "_id": "62cee787242f3be6beb75781",
+        "email": "candidate2_intern2_user1_bos3@test.com",
+        "boss": "62cedd5ffcd06c11b0053645",
+        "role": "user"
+    }
+]
