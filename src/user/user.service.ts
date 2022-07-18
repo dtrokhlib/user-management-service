@@ -106,26 +106,29 @@ export class UserService {
     }
 
     private async recursiveUserQuery(user) {
-        let users = await this.userModel.find(
-            { boss: user.id },
-            { email: 1, _id: 1, boss: 1, role: 1 }
-        );
+        let users = await this.userModel
+            .find({ boss: user.id }, { email: 1, _id: 1, boss: 1, role: 1 })
+            .exec();
         let usersList = [...users];
         for (let i = 0; i < usersList.length; i++) {
-            let employee = await this.userModel.find(
-                { boss: usersList[i].id },
-                { email: 1, _id: 1, boss: 1, role: 1 }
-            );
+            let employee = await this.userModel
+                .find(
+                    { boss: usersList[i].id },
+                    { email: 1, _id: 1, boss: 1, role: 1 }
+                )
+                .exec();
             if (employee) {
                 usersList = [...usersList, ...employee];
             }
         }
-        const requestor = await this.userModel.findById(user.id, {
-            email: 1,
-            _id: 1,
-            boss: 1,
-            role: 1,
-        });
+        const requestor = await this.userModel
+            .findById(user.id, {
+                email: 1,
+                _id: 1,
+                boss: 1,
+                role: 1,
+            })
+            .exec();
         return [requestor, ...usersList];
     }
 }
